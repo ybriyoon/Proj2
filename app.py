@@ -3,6 +3,8 @@ from flask_pymongo import PyMongo
 import data.getting_data
 
 app = Flask(__name__)
+app.static_folder = 'templates/static'
+
 
 @app.route("/")
 def index():
