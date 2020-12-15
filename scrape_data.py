@@ -1,99 +1,153 @@
 from splinter import Browser
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup as bs
 import requests
 import csv
 
+def scrape():
+    information = dict()
+    outdoor_dic = dict()
+    indoor_dic = dict()
+    # link to scrape
+    url = "https://www.worldathletics.org/records/by-category/world-records"
+    page = requests.get(url)
+    soup = bs(page.content)
+    tables_out= soup.find("div", {"id": "womenoutdoor"})
+    tables_in= soup.find("div", {"id": "womenindoor"})
 
-# link to scrape
-url = "https://www.worldathletics.org/records/by-category/world-records"
-r = requests.get(url)
-soup = BeautifulSoup(r.text, "html.parser")
-
-
-# write to new csv
-filename = 'test.csv'
-csv_writer = csv.writer(open(filename, 'w', encoding='utf-8'))
-
-
-
-# scraping the table 
-tables_out= soup.find("div", {"id": "womenoutdoor"})
-tables_in= soup.find("div", {"id": "womenindoor"})
-
-
-for tr in tables_out.find_all('tr'):
-    data=[]
+    # Women outdoor
+    headers=[]
+    for tr in tables_out.find_all('tr'):    
+        for th in tr.find_all('th'):
+            new_data = th.text
+            new_data = new_data.split()
+            headers.append(new_data[0])
     
-    for th in tr.find_all('th'):
-        data.append(th.text)
-    
-        if(data):
-            print("headers: {}".format(','.join(data)))
-            csv_writer.writerow(data)
-            continue
+    outdoor_dic.update({'headers':headers})
 
+    disciplines = []
+    for td in tables_out.find_all('td', {'data-th':"DISCIPLINE"}):
+        new_data = td.text
+        new_data = new_data.split()
+        separator = ' '
+        new_data = separator.join(new_data)
+        disciplines.append(new_data)
+    outdoor_dic.update({'disciplines':disciplines})
 
-    for td in tables_out.find_all('td', {'data-th':"DISCIPLINE"}):  
-        data.append(td.text)
-    
-        if(data):
-            print("DISCIPLINE {}".format(','.join(data)))
-            csv_writer.writerow(data)
-            continue
-    
+    pref = []
     for td in tables_out.find_all('td', {'data-th':"PERF"}):
-        data.append(td.text)
-    
-        if(data):
-            print("PERF: {}".format(','.join(data)))
-            csv_writer.writerow(data)
-            continue
+        new_data = td.text
+        new_data = new_data.split()
+        separator = ''
+        new_data = separator.join(new_data)
+        if(new_data != ''):
+            pref.append(new_data)
+    outdoor_dic.update({'pref':pref})
 
-    for td in tables_out.find_all('td', {'data-th':"WIND"}):
-        data.append(td.text)
-    
-        if(data):
-            print("WIND: {}".format(','.join(data)))
-            csv_writer.writerow(data)
-            continue
-
+    competitor = []
     for td in tables_out.find_all('td', {'data-th':"COMPETITOR"}):
-        data.append(td.text)
-    
-        if(data):
-            print("COMPETITOR: {}".format(','.join(data)))
-            csv_writer.writerow(data)
-            continue
+        new_data = td.text
+        new_data = new_data.split()
+        separator = ' '
+        new_data = separator.join(new_data)
+        competitor.append(new_data)
+    outdoor_dic.update({'competitor':competitor})
 
+    DOB = []
     for td in tables_out.find_all('td', {'data-th':"DOB"}):
-        data.append(td.text)
-    
-        if(data):
-            print("DOB: {}".format(','.join(data)))
-            csv_writer.writerow(data)
-            continue
-  
+        new_data = td.text
+        new_data = new_data.split()
+        separator = ' '
+        new_data = separator.join(new_data)
+        DOB.append(new_data)
+    outdoor_dic.update({'DOB':DOB})
+
+    country = []
     for td in tables_out.find_all('td', {'data-th':"COUNTRY"}):
-        data.append(td.text)
-    
-        if(data):
-            print("COUNTRY: {}".format(','.join(data)))
-            csv_writer.writerow(data)
-            continue
+        new_data = td.text
+        new_data = new_data.split()
+        separator = ' '
+        new_data = separator.join(new_data)
+        country.append(new_data)
+    outdoor_dic.update({'country':country})
 
-    for td in tables_out.find_all('td', {'data-th':"VENUE"}):
-        data.append(td.text)
-    
-        if(data):
-            print("VENUE: {}".format(','.join(data)))
-            csv_writer.writerow(data)
-            continue
-
-    
+    date = []
     for td in tables_out.find_all('td', {'data-th':"DATE"}):
-        data.append(td.text)
+        new_data = td.text
+        new_data = new_data.split()
+        separator = ' '
+        new_data = separator.join(new_data)
+        date.append(new_data)
+    outdoor_dic.update({'date':date})
+
+    # Women indoor
+    headers=[]
+    for tr in tables_in.find_all('tr'):    
+        for th in tr.find_all('th'):
+            new_data = th.text
+            new_data = new_data.split()
+            headers.append(new_data[0])
     
-        if(data):
-            print("DATE: {}".format(','.join(data)))
-            csv_writer.writerow(data)
-            continue
+    indoor_dic.update({'headers':headers})
+
+    disciplines = []
+    for td in tables_in.find_all('td', {'data-th':"DISCIPLINE"}):
+        new_data = td.text
+        new_data = new_data.split()
+        separator = ' '
+        new_data = separator.join(new_data)
+        disciplines.append(new_data)
+    indoor_dic.update({'disciplines':disciplines})
+
+    pref = []
+    for td in tables_in.find_all('td', {'data-th':"PERF"}):
+        new_data = td.text
+        new_data = new_data.split()
+        separator = ''
+        new_data = separator.join(new_data)
+        if(new_data != ''):
+            pref.append(new_data)
+    indoor_dic.update({'pref':pref})
+
+    competitor = []
+    for td in tables_in.find_all('td', {'data-th':"COMPETITOR"}):
+        new_data = td.text
+        new_data = new_data.split()
+        separator = ' '
+        new_data = separator.join(new_data)
+        competitor.append(new_data)
+    indoor_dic.update({'competitor':competitor})
+
+    DOB = []
+    for td in tables_in.find_all('td', {'data-th':"DOB"}):
+        new_data = td.text
+        new_data = new_data.split()
+        separator = ' '
+        new_data = separator.join(new_data)
+        DOB.append(new_data)
+    indoor_dic.update({'DOB':DOB})
+
+    country = []
+    for td in tables_in.find_all('td', {'data-th':"COUNTRY"}):
+        new_data = td.text
+        new_data = new_data.split()
+        separator = ' '
+        new_data = separator.join(new_data)
+        country.append(new_data)
+    indoor_dic.update({'country':country})
+
+    date = []
+    for td in tables_in.find_all('td', {'data-th':"DATE"}):
+        new_data = td.text
+        new_data = new_data.split()
+        separator = ' '
+        new_data = separator.join(new_data)
+        date.append(new_data)
+    indoor_dic.update({'date':date})
+
+    information.update({"outdoor": outdoor_dic, "indoor": indoor_dic})
+
+    return(information)
+
+
+scrape()
+print("done!")
