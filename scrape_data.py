@@ -148,6 +148,3 @@ def scrape():
 
     return(information)
 
-
-scrape()
-print("done!")
