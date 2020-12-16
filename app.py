@@ -13,12 +13,12 @@ def index():
     return render_template("index.html")
 
 
-# @app.route("/maps")
-# def maps():
-#     return render_template("maps.html")
-
-@app.route("/other")
+@app.route("/maps")
 def maps():
+    return render_template("maps.html")
+
+@app.route("/maps_with_data")
+def maps_with_data():
     world_data = mongo.db.world_data.find_one()
     return render_template("maps2.html", world_data=world_data)
 
