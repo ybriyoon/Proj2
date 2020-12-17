@@ -17,10 +17,10 @@ def index():
 def maps():
     return render_template("maps.html")
 
-@app.route("/maps_with_data")
-def maps_with_data():
+@app.route("/timeline_with_data")
+def timeline_with_data():
     world_data = mongo.db.world_data.find_one()
-    return render_template("maps2.html", world_data=world_data)
+    return render_template("timeline2.html", world_data=world_data)
 
 @app.route('/load_data')
 def scrape():
