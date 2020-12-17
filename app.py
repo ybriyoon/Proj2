@@ -28,7 +28,7 @@ def scrape():
     world_data = mongo.db.world_data
     world_info = scrape_data.scrape()
     world_data.update({}, world_info, upsert=True)
-    return redirect("/other", code=302)
+    return redirect("/timeline_with_data", code=302)
 
 
 @app.route("/plots")
