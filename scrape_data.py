@@ -10,7 +10,7 @@ def scrape():
     # link to scrape
     url = "https://www.worldathletics.org/records/by-category/world-records"
     page = requests.get(url)
-    soup = bs(page.content)
+    soup = bs(page.content, features="lxml")
     tables_out= soup.find("div", {"id": "womenoutdoor"})
     tables_in= soup.find("div", {"id": "womenindoor"})
 
