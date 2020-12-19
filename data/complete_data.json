@@ -1,4 +1,4 @@
-var mapdata = [
+[
     {
       "name": "Unsung hero",
       "img": "https://ichef.bbci.co.uk/news/300/cpsprodpb/F288/production/_115588026_100_women_2020_unsung.png",
@@ -999,4 +999,4 @@ var mapdata = [
       "Latitude": "41.20438",
       "Longitude": "74.766098"
     }
-  ];
+  ]
