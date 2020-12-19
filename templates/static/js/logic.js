@@ -9,17 +9,23 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
   accessToken: API_KEY
 }).addTo(myMap);
 
-var marker = L.marker([40.7128, -74.006]).addTo(myMap);
-
 var lat = [];
 var long = [];
+var womanname = [];
+var womanrole = [];
+var womanpic = [];
 
 mapdata.forEach((mapdata) => {
   lat.push(parseFloat(mapdata.Latitude));
   long.push(parseFloat(mapdata.Longitude));
+  womanname.push(mapdata.name);
+  womanrole.push(mapdata.role);
+  womanpic.push(mapdata.img);
 });
 
 var i;
-for (i = 0; i < mapdata.length; i++) {
-  L.marker([lat[i], long[i]]).addTo(myMap);
+for (i = 1; i < mapdata.length; i++) {
+  L.marker([lat[i], long[i]]).bindPopup(
+    '<img src="' + womanpic[i] + '" width="100" height="100"/><br><strong>' + womanname[i] + '</strong><br>' + womanrole[i]
+    ).addTo(myMap);
 };
