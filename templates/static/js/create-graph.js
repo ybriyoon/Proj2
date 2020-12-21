@@ -2,7 +2,7 @@
  * Parse the data and create a graph with the data.
  */
 function parseData(createGraph) {
-	Papa.parse("top20countries.csv", {
+	Papa.parse("static/data/top20countries.csv", {
 		download: true,
 		complete: function(results) {
 			// console.log(results.data[1][1]);
@@ -25,9 +25,9 @@ function createGraph(data) {
 	
 	var chart = c3.generate({
 		bindto: '#chart',
-		title:{
-			text: "Top 5 Countries"
-		},
+	title:{
+		text: "Top 5 Countries"
+	},	
     data: {
         columns: [
 			[country[1],count[1]],
