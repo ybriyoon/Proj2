@@ -2,10 +2,10 @@
  * Parse the data and create a graph with the data.
  */
 function parseData(createGraph) {
-	Papa.parse("../data/complete_data.csv", {
+	Papa.parse("top20countries.csv", {
 		download: true,
 		complete: function(results) {
-			// console.log(results.data);
+			// console.log(results.data[1][1]);
 			createGraph(results.data);
 		}
 	});
@@ -13,19 +13,26 @@ function parseData(createGraph) {
 
 function createGraph(data) {
 	var country = ["Countries"];
+	var count = ["Count"];
 
-	for (var i = 1; i < data.length; i++) {
-		country.push(data[i][3]);
+	for (var i = 1; i < 6; i++) {
+		country.push(data[i][1]);
+		count.push(data[i][2])
 	}
 
 	console.log(country);
-
+	console.log(count);
+	
 	var chart = c3.generate({
 		bindto: '#chart',
     data: {
         columns: [
-            ['data1', 10],
-            ['data2', 120],
+			[country[1],count[1]],
+			[country[2],count[2]],
+			[country[3],count[3]],
+			[country[4],count[4]],
+			[country[5],count[5]],
+    
         ],
         type : 'pie',
         onclick: function (d, i) { console.log("onclick", d, i); },
