@@ -21,6 +21,9 @@ function createGraph(data) {
 
 	var chart = c3.generate({
 		bindto: '#chart',
+		title:{
+			text: "Top 5 Countries"
+		},
 		data: {
 			xs: {
 				setosa: 'setosa_x',
@@ -47,32 +50,6 @@ function createGraph(data) {
 			}
 		}
 	});
-
-
-
-
-// 	var country = ["Countries"];
-
-// 	for (var i = 1; i < data.length; i++) {
-// 		country.push(data[i][3]);
-// 	}
-
-// 	console.log(country);
-
-// 	var chart = c3.generate({
-// 		bindto: '#chart',
-//     data: {
-//         columns: [
-//             ['data1', 30],
-//             ['data2', 120],
-//         ],
-//         type : 'pie',
-//         onclick: function (d, i) { console.log("onclick", d, i); },
-//         onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-//         onmouseout: function (d, i) { console.log("onmouseout", d, i); }
-//     }
-// });
-
 }
 
 parseData(createGraph);

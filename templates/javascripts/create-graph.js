@@ -25,6 +25,9 @@ function createGraph(data) {
 	
 	var chart = c3.generate({
 		bindto: '#chart',
+	title:{
+		text: "Top 5 Countries"
+	},	
     data: {
         columns: [
 			[country[1],count[1]],

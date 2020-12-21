@@ -25,6 +25,15 @@ function createGraph(data) {
 	
 	var chart = c3.generate({
 		bindto: '#chart',
+		_title: {
+			text: "Top 5 Countries"
+		},
+	get title() {
+		return this._title;
+	},
+	set title(value) {
+		this._title = value;
+	},
     data: {
         columns: [
 			[country[1],count[1]],
@@ -41,4 +50,7 @@ function createGraph(data) {
     }
 })}
 parseData(createGraph);
+
+
+
 
