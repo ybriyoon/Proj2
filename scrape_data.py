@@ -2,6 +2,7 @@ from splinter import Browser
 from bs4 import BeautifulSoup as bs
 import requests
 import csv
+import pandas as pd
 
 def scrape():
     information = dict()
@@ -22,8 +23,6 @@ def scrape():
             new_data = new_data.split()
             headers.append(new_data[0])
     
-    outdoor_dic.update({'headers':headers})
-
     disciplines = []
     for td in tables_out.find_all('td', {'data-th':"DISCIPLINE"}):
         new_data = td.text
@@ -31,8 +30,7 @@ def scrape():
         separator = ' '
         new_data = separator.join(new_data)
         disciplines.append(new_data)
-    outdoor_dic.update({'disciplines':disciplines})
-
+    
     pref = []
     for td in tables_out.find_all('td', {'data-th':"PERF"}):
         new_data = td.text
@@ -41,7 +39,6 @@ def scrape():
         new_data = separator.join(new_data)
         if(new_data != ''):
             pref.append(new_data)
-    outdoor_dic.update({'pref':pref})
 
     competitor = []
     for td in tables_out.find_all('td', {'data-th':"COMPETITOR"}):
@@ -50,7 +47,6 @@ def scrape():
         separator = ' '
         new_data = separator.join(new_data)
         competitor.append(new_data)
-    outdoor_dic.update({'competitor':competitor})
 
     DOB = []
     for td in tables_out.find_all('td', {'data-th':"DOB"}):
@@ -59,7 +55,6 @@ def scrape():
         separator = ' '
         new_data = separator.join(new_data)
         DOB.append(new_data)
-    outdoor_dic.update({'DOB':DOB})
 
     country = []
     for td in tables_out.find_all('td', {'data-th':"COUNTRY"}):
@@ -68,7 +63,6 @@ def scrape():
         separator = ' '
         new_data = separator.join(new_data)
         country.append(new_data)
-    outdoor_dic.update({'country':country})
 
     date = []
     for td in tables_out.find_all('td', {'data-th':"DATE"}):
@@ -77,8 +71,20 @@ def scrape():
         separator = ' '
         new_data = separator.join(new_data)
         date.append(new_data)
-    outdoor_dic.update({'date':date})
+    
+    data_df = pd.DataFrame({'Discipline': disciplines,
+                        'Perf': pref,
+                        'Competitor': competitor,
+                        'DOB': DOB,
+                        'Country': country,
+                        'Date':date
+                       })
+    for index, row in data_df.iterrows():
+        row['Date']= row['Date'][7:11]
 
+    data_df = data_df.sort_values("Date")
+    outdoor_dic = data_df.to_dict('split')
+    
     # Women indoor
     headers=[]
     for tr in tables_in.find_all('tr'):    
@@ -87,8 +93,6 @@ def scrape():
             new_data = new_data.split()
             headers.append(new_data[0])
     
-    indoor_dic.update({'headers':headers})
-
     disciplines = []
     for td in tables_in.find_all('td', {'data-th':"DISCIPLINE"}):
         new_data = td.text
@@ -96,7 +100,6 @@ def scrape():
         separator = ' '
         new_data = separator.join(new_data)
         disciplines.append(new_data)
-    indoor_dic.update({'disciplines':disciplines})
 
     pref = []
     for td in tables_in.find_all('td', {'data-th':"PERF"}):
@@ -106,7 +109,6 @@ def scrape():
         new_data = separator.join(new_data)
         if(new_data != ''):
             pref.append(new_data)
-    indoor_dic.update({'pref':pref})
 
     competitor = []
     for td in tables_in.find_all('td', {'data-th':"COMPETITOR"}):
@@ -115,7 +117,6 @@ def scrape():
         separator = ' '
         new_data = separator.join(new_data)
         competitor.append(new_data)
-    indoor_dic.update({'competitor':competitor})
 
     DOB = []
     for td in tables_in.find_all('td', {'data-th':"DOB"}):
@@ -124,7 +125,6 @@ def scrape():
         separator = ' '
         new_data = separator.join(new_data)
         DOB.append(new_data)
-    indoor_dic.update({'DOB':DOB})
 
     country = []
     for td in tables_in.find_all('td', {'data-th':"COUNTRY"}):
@@ -133,7 +133,6 @@ def scrape():
         separator = ' '
         new_data = separator.join(new_data)
         country.append(new_data)
-    indoor_dic.update({'country':country})
 
     date = []
     for td in tables_in.find_all('td', {'data-th':"DATE"}):
@@ -142,9 +141,20 @@ def scrape():
         separator = ' '
         new_data = separator.join(new_data)
         date.append(new_data)
-    indoor_dic.update({'date':date})
+
+    data_df = pd.DataFrame({'Discipline': disciplines,
+                        'Perf': pref,
+                        'Competitor': competitor,
+                        'DOB': DOB,
+                        'Country': country,
+                        'Date':date
+                       })
+    for index, row in data_df.iterrows():
+        row['Date']= row['Date'][7:11]
+
+    data_df = data_df.sort_values("Date")
+    indoor_dic = data_df.to_dict('split')
 
     information.update({"outdoor": outdoor_dic, "indoor": indoor_dic})
 
     return(information)
-
