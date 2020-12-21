@@ -22,6 +22,16 @@ def timeline_with_data():
     world_data = mongo.db.world_data.find_one()
     return render_template("timeline2.html", world_data=world_data)
 
+@app.route("/timeline/indoor")
+def timeline_indoor():
+    world_data = mongo.db.world_data.find_one()
+    return render_template("indoor.html", world_data=world_data)
+
+@app.route("/timeline/outdoor")
+def timeline_outdoor():
+    world_data = mongo.db.world_data.find_one()
+    return render_template("outdoor.html", world_data=world_data)
+
 @app.route('/load_data')
 def scrape():
     # data.getting_data.get_data()
@@ -34,13 +44,6 @@ def scrape():
 @app.route("/plots")
 def plots():
     return render_template("plots.html")
-
-
-@app.route("/timeline")
-def timeline():
-    return render_template("timeline.html")
-
-
 
 
 if __name__ == "__main__":
